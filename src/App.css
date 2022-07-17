@@ -6,7 +6,7 @@
 .App-header {
   /* background-color: #282c34; */
   
-  background-image: url("./assets/cielo.png");
+  background-image: url("./assets/cielo3.png");
   background-repeat: no-repeat;
   background-size: cover;
 
@@ -61,8 +61,8 @@
 }
 
 .icon {
-  width: 65px;
-  height: 65px;
+  width: 75px;
+  height: 75px;
   padding: 10px;
 }
 
@@ -70,18 +70,19 @@
   width: 600px;
   height: 100%;
   padding: 10px;
-  margin-bottom: 80px;
+  margin-bottom: 30px;
 }
 
-.mint {
-  background-color: #046959;
+.button {
+  background-color: #ff548f;
   /* background-image: url("./assets/cerebro.png"); */
   font-family: 'Fredoka One', cursive;
-  width: 13%;
+  width: 17%;
   font-size: 30px;
   border-radius: 20px;
   transition: 0.5s;
   padding: 10px;
+  cursor: pointer;
 }
 
 .mint:hover {

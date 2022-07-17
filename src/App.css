@@ -1,20 +1,18 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  font-family: 'Modak', cursive;
 }
 
 .App-header {
-  background-color: #282c34;
+  /* background-color: #282c34; */
+  
+  background-image: url("./assets/cielo.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  /* background: rgb(75,23,40);
+ background: linear-gradient(0deg, rgba(75,23,40,1) 0%, rgba(0,0,0,1) 100%); */
+
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -24,15 +22,88 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+#cf {
+  position: relative;
+  height: 500px;
+  width: 1080px;
+  display: flex;
+  justify-content: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#cf img {
+  position: absolute;
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+  width: 700px;
+  height: auto;
+
+}
+
+/* 
+#cf img.top:hover {
+  opacity: 0;
+} */
+
+#cf img.bottom {
+  opacity: 0;
+}
+
+#cf img.bottom:hover {
+  opacity: 1;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.icon {
+  width: 65px;
+  height: 65px;
+  padding: 10px;
+}
+
+.logo {
+  width: 600px;
+  height: 100%;
+  padding: 10px;
+  margin-bottom: 80px;
+}
+
+.mint {
+  background-color: #046959;
+  /* background-image: url("./assets/cerebro.png"); */
+  font-family: 'Fredoka One', cursive;
+  width: 13%;
+  font-size: 30px;
+  border-radius: 20px;
+  transition: 0.5s;
+  padding: 10px;
+}
+
+.mint:hover {
+  box-shadow: 0px 0px 30px 5px #ff548f;
+}
+
+a:link {
+  text-decoration: none;
+  color: white;
+}
+
+a:visited {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover {
+  text-decoration: none;
+  color: white;
+}
+
+a:active {
+  text-decoration: none;
+  color: white;
 }

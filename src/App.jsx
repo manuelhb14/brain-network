@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactAudioPlayer from 'react-audio-player';
-import { ethers } from 'ethers';
+import { ethers, BigNumber } from 'ethers';
 
 import './App.css';
 
@@ -54,10 +54,8 @@ function App() {
     if (isConnected) {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-      console.log(signer);
       const contract = new ethers.Contract(contractAddress, abi, provider.getSigner());
       const count = await contract.freeMintedCount(signer.getAddress());
-      console.log(count);
       setFreeMintedCount(count);
     }
   }
@@ -67,12 +65,12 @@ function App() {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const contract = new ethers.Contract(contractAddress, abi, signer);
-        const totalCost = cost * mintAmount;
-        const totalGas = gasLimit * mintAmount
+        const totalCost = BigNumber.from(cost).mul(BigNumber.from(mintAmount));
+        const totalGas = BigNumber.from(gasLimit).mul(BigNumber.from(mintAmount));
         setPending(true);
         await contract.mint_540(mintAmount, {
-          gasLimit: gasLimit,
-          value: freeMintedCount !== 0 ? totalCost : totalCost - cost
+          gasLimit: totalGas.toString(),
+          value: freeMintedCount !== 0 ? totalCost : BigNumber.from(totalCost).sub(cost).toString()
         }).then(() => {
           console.log("Minted");
         }

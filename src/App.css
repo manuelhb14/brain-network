@@ -1,15 +1,13 @@
 .App {
   text-align: center;
-  font-family: 'Modak', cursive;
+  font-family: 'Fredoka One', cursive;
+  background-image: url("./assets/cielo4.png");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .App-header {
   /* background-color: #282c34; */
-  
-  background-image: url("./assets/cielo3.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-
   /* background: rgb(75,23,40);
  background: linear-gradient(0deg, rgba(75,23,40,1) 0%, rgba(0,0,0,1) 100%); */
 
@@ -57,12 +55,14 @@
 .navbar {
   position: fixed;
   top: 0;
-  width: 100%;
+  width: 85%;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .icon {
-  width: 75px;
-  height: 75px;
+  width: 65px;
+  height: 65px;
   padding: 10px;
 }
 
@@ -70,11 +70,11 @@
   width: 600px;
   height: 100%;
   padding: 10px;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 }
 
 .button {
-  background-color: #ff548f;
+  background-color: #f5c4d5;
   /* background-image: url("./assets/cerebro.png"); */
   font-family: 'Fredoka One', cursive;
   width: 17%;
@@ -85,8 +85,47 @@
   cursor: pointer;
 }
 
-.mint:hover {
+.button-connected {
+  background-color: #ff3c80;
+  /* background-image: url("./assets/cerebro.png"); */
+  font-family: 'Fredoka One', cursive;
+  width: 17%;
+  font-size: 30px;
+  border-radius: 20px;
+  transition: 0.5s;
+  padding: 10px;
+  cursor: pointer;
+  -webkit-transition: background-color 0.5s ease-in-out;
+  -moz-transition: background-color 0.5s ease-in-out;
+  -o-transition: background-color 0.5s ease-in-out;
+  transition: background-color 0.5s ease-in-out;
+}
+
+/* .button-connected:hover {
   box-shadow: 0px 0px 30px 5px #ff548f;
+} */
+
+.mint-amount {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.mint-value {
+  margin: 0px 15px;
+}
+
+.button-change {
+  background-color: #ff3c80;
+  /* background-image: url("./assets/cerebro.png"); */
+  font-family: 'Fredoka One', cursive;
+  font-size: 20px;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
 }
 
 a:link {
@@ -107,4 +146,37 @@ a:hover {
 a:active {
   text-decoration: none;
   color: white;
+}
+
+.nft {
+  width: 100%;
+  height: auto;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  padding: 0px 20% 100px 20%;
+}
+
+.title {
+  font-size: calc(10px + 2vmin);
+  font-family: 'Fredoka One', cursive;
+  margin-bottom: 30px;
+}
+
+.text {
+  padding: 0px 20%;
+}
+
+.learn {
+  font-family: 'Fredoka One', cursive;
+  width: 50%;
+  font-size: 25px;
+  border-radius: 20px;
+  padding: 10px;
+  cursor: pointer;
 }

@@ -139,7 +139,7 @@ function App() {
           </div>
         )}
         <button onClick={isConnected ? mint : connect} className= { isConnected ? "button-connected" : "button" }>{text}</button>
-        <audio src={music} autoPlay loop />
+        {/* <audio src={music} autoPlay loop /> */}
       </header>
       <div className="content">
         <div className="content-left">

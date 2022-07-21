@@ -34,15 +34,10 @@
   -moz-transition: opacity 1s ease-in-out;
   -o-transition: opacity 1s ease-in-out;
   transition: opacity 1s ease-in-out;
-  width: 700px;
+  width: 650px;
   height: auto;
 
 }
-
-/* 
-#cf img.top:hover {
-  opacity: 0;
-} */
 
 #cf img.bottom {
   opacity: 0;
@@ -58,6 +53,7 @@
   width: 85%;
   display: flex;
   justify-content: flex-end;
+  z-index: 1;
 }
 
 .icon {
@@ -71,6 +67,10 @@
   height: 100%;
   padding: 10px;
   /* margin-bottom: 30px; */
+}
+
+.mint-text {
+  padding-top: 15px;
 }
 
 .button {
@@ -151,6 +151,16 @@ a:active {
 .nft {
   width: 100%;
   height: auto;
+  border-radius: 20px;
+  transition: 0.5s;
+}
+
+.nft-hover {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0px 0px 30px 5px #01C8E0;
+  transition: 0.5s;
 }
 
 .content {
@@ -163,13 +173,16 @@ a:active {
 }
 
 .title {
-  font-size: calc(10px + 2vmin);
+  font-size: calc(10px + 3vmin);
   font-family: 'Fredoka One', cursive;
   margin-bottom: 30px;
+  color: #fff;
 }
 
 .text {
-  padding: 0px 20%;
+  padding: 0px 10%;
+  color: #fff;
+  font-size: calc(10px + 1.5vmin);
 }
 
 .learn {
@@ -179,4 +192,74 @@ a:active {
   border-radius: 20px;
   padding: 10px;
   cursor: pointer;
+}
+
+.visible {
+  top: 0;
+  transition: top 0.4s ease-out;
+}
+
+.hidden {
+  top: -80px;
+  transition: top 0.4s ease-out;
+}
+
+@media screen and (max-width: 600px) {
+
+  .App-header {
+    justify-content: flex-start;
+    min-height: 80vh;
+    padding-top: 40%;
+  }
+
+  .navbar {
+    width: 100%;
+    justify-content: center;
+  }
+
+  #cf {
+    width: 100%;
+    height: 325px;
+  }
+
+  #cf img {
+    width: 100%;
+  }
+
+  .logo {
+    width: 100%;
+    height: auto;
+    padding: 0;
+  }
+
+  .button {
+    width: 70%;
+  }
+
+  .button-connected {
+    width: 70%;
+  }
+
+  .mint-text {
+    padding: 0px 10%;
+  }
+
+  .mint-amount {
+    margin-bottom: 15px;
+  }
+
+  .content {
+    flex-direction: column;
+    padding: 0px 10%;
+  }
+
+  .title {
+    font-size: calc(30px + 2.5vmin);
+    margin-bottom: 0px;
+  }
+
+  .text {
+    font-size: calc(15px + 1.5vmin);
+    padding: 0px;
+  }
 }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactAudioPlayer from 'react-audio-player';
 import { ethers, BigNumber } from 'ethers';
-
 import './App.css';
 
 import brain0 from "./assets/brain.png";
@@ -36,6 +35,10 @@ function App() {
   const [freeMintedCount, setFreeMintedCount] = useState(0);
   const [pending, setPending] = useState(false);
   const [maxMintAmount, setMaxMintAmount] = useState(4);
+  const [position, setPosition] = useState(window.scrollY)
+  const [visible, setVisible] = useState(true);
+  const [width, setWidth] = useState(window.innerWidth);
+  const [isHover, setIsHover] = useState(false);
 
   const connect = async () => {
     if (window.ethereum) {
@@ -98,6 +101,37 @@ function App() {
   };
 
   useEffect(() => {
+    window.addEventListener('scroll', () => {
+      setPosition(window.scrollY);
+    }
+    );
+    window.addEventListener('resize', () => {
+      setWidth(window.innerWidth);
+    }
+    );
+    return () => {
+      window.removeEventListener('scroll', () => {
+        setPosition(window.scrollY);
+      }
+      );
+      window.removeEventListener('resize', () => {
+        setWidth(window.innerWidth);
+      }
+      );
+    }
+  }
+  );
+
+  useEffect(() => {
+    if (position > 100) {
+      setVisible(false);
+    } else {
+      setVisible(true);
+    }
+  }
+  , [position]);
+
+  useEffect(() => {
     if (isConnected) {
       setText("Mint now");
     }
@@ -108,9 +142,10 @@ function App() {
   }
   , [isConnected, pending]);
 
+
   return (
     <div className="App">
-      <div className="navbar">
+      <div className={`navbar ${width <= 1750 && !visible ? "hidden" : "visible"}`}>
         <Icon link="https://twitter.com" icon={twitterLogo} name="twitter" />
         <Icon link="https://discord.com" icon={discordLogo} name="discord" />
         <Icon link="https://opensea.io" icon={openseaLogo} name="opensea" />
@@ -141,12 +176,11 @@ function App() {
       </header>
       <div className="content">
         <div className="content-left">
-          <img className="nft" src={nft} alt="nft"/>
+          <img className={isHover ? "nft-hover" : "nft"} src={nft} alt="nft" onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}/>
         </div>
         <div className="content-right">
-          <h3 className='title'> Welcome to Brain Network! </h3>
+          <h3 className='title'> Welcome to Brain Network 🧠 </h3>
           <p className='text'> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-          <button className="learn"> Learn more </button>
         </div>
       </div>  
     </div>

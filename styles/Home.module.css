@@ -1,7 +1,7 @@
 .App {
   text-align: center;
   font-family: 'Fredoka One', cursive;
-  background-image: url("./assets/cielo4.png");
+  background-image: url("/assets/cielo4.png");
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -128,12 +128,12 @@
   cursor: pointer;
 }
 
-a:link {
+/* a:link {
   text-decoration: none;
   color: white;
-}
+} */
 
-a:visited {
+/* a:visited {
   text-decoration: none;
   color: white;
 }
@@ -146,7 +146,7 @@ a:hover {
 a:active {
   text-decoration: none;
   color: white;
-}
+} */
 
 .nft {
   width: 100%;

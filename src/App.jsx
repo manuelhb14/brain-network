@@ -1,15 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import ReactAudioPlayer from 'react-audio-player';
 import { ethers, BigNumber } from 'ethers';
-import Image from 'next/image'
-import '../styles/Home.module.css';
+import './App.css';
 
-// import music from "/assets/music.mp3";
+import brain0 from "./assets/brain.png";
+import brain1 from "./assets/brain1.png";
 
-import Icon from '../components/Icon';
+import logo0 from './assets/logo0.png';
 
-import abi from '../public/constants/abi';
+import twitterLogo from "./assets/twitter.png"
+import openseaLogo from "./assets/opensea.png"
+import discordLogo from "./assets/discord.png"
+import looksLogo from "./assets/looks.png"
+import termsLogo from "./assets/terms.png"
+import audioLogo from "./assets/audio.svg"
 
-export default function Home() {
+import nft from "./assets/mosca1.jpeg"
+
+import music from "./assets/music.mp3";
+
+import Icon from './components/Icon';
+
+import abi from './constants/abi';
+
+function App() {
 
   const [text, setText] = useState("Connect Wallet");
   const [isConnected, setIsConnected] = useState(false);
@@ -21,9 +35,9 @@ export default function Home() {
   const [freeMintedCount, setFreeMintedCount] = useState(0);
   const [pending, setPending] = useState(false);
   const [maxMintAmount, setMaxMintAmount] = useState(4);
-  const [position, setPosition] = useState(0)
+  const [position, setPosition] = useState(window.scrollY)
   const [visible, setVisible] = useState(true);
-  const [width, setWidth] = useState(0);
+  const [width, setWidth] = useState(window.innerWidth);
   const [isHover, setIsHover] = useState(false);
 
   const connect = async () => {
@@ -132,15 +146,15 @@ export default function Home() {
   return (
     <div className="App">
       <div className={`navbar ${width <= 1750 && !visible ? "hidden" : "visible"}`}>
-        <Icon link="https://twitter.com" icon="/assets/twitter.png" name="twitter" />
-        <Icon link="https://discord.com" icon="/assets/discord.png "name="discord" />
-        <Icon link="https://opensea.io" icon="/assets/opensea.png" name="opensea" />
-        <Icon link="https://looksrare.org" icon="/assets/looks.png" name="looks" />
+        <Icon link="https://twitter.com" icon={twitterLogo} name="twitter" />
+        <Icon link="https://discord.com" icon={discordLogo} name="discord" />
+        <Icon link="https://opensea.io" icon={openseaLogo} name="opensea" />
+        <Icon link="https://looksrare.org" icon={looksLogo} name="looks" />
       </div>
       <header className="App-header">
         <div id="cf">
-          <Image className="top" src="/assets/brain.png" alt="brain0" layout="fill" objectFit='contain' />
-          <Image className="bottom" src="/assets/brain1.png" alt="brain1" layout="fill" objectFit="contain"/>
+          <img className="top" src={brain0} alt="brain0"/>
+          <img className="bottom" src={brain1} alt="brain1"/>
         </div>
         {isConnected ? (
           <div className="mint-text">
@@ -153,8 +167,8 @@ export default function Home() {
             </div>
           </div>
         ) : (
-          <div className="logo-container" >
-            <img className="logo" src="/assets/logo0.png" alt="logo" objectFit="contain" layout='fill' />
+          <div className="image">
+            <img className="logo" src={logo0} alt="logo"/>
           </div>
         )}
         <button onClick={isConnected ? mint : connect} className= { isConnected ? "button-connected" : "button" }>{text}</button>
@@ -162,7 +176,7 @@ export default function Home() {
       </header>
       <div className="content">
         <div className="content-left">
-          <img className={isHover ? "nft-hover" : "nft"} src="/assets/mosca1.jpeg" alt="nft" onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}/>
+          <img className={isHover ? "nft-hover" : "nft"} src={nft} alt="nft" onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}/>
         </div>
         <div className="content-right">
           <h3 className='title'> Welcome to Brain Network 🧠 </h3>
@@ -172,3 +186,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default App;

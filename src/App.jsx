@@ -8,11 +8,11 @@ import brain1 from "./assets/brain1.png";
 
 import logo0 from './assets/logo0.png';
 
-import twitterLogo from "./assets/twitter.png"
-import openseaLogo from "./assets/opensea.png"
-import discordLogo from "./assets/discord.png"
-import looksLogo from "./assets/looks.png"
-import termsLogo from "./assets/terms.png"
+import twitterLogo from "./assets/twitter-min.png"
+import openseaLogo from "./assets/opensea-min.png"
+import discordLogo from "./assets/discord-min.png"
+import looksLogo from "./assets/looks-min.png"
+import termsLogo from "./assets/terms-min.png"
 import audioLogo from "./assets/audio.svg"
 
 import nft from "./assets/mosca1.jpeg"

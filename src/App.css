@@ -2,7 +2,7 @@
   text-align: center;
   background-color: #282c34;
   font-family: 'Fredoka One', cursive;
-  background-image: url("./assets/cielo4-min.png");
+  background-image: url("./assets/cielo4-min.webp");
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -207,7 +207,7 @@ a:active {
 @media screen and (max-width: 600px) {
 
   .App {
-    background-image: url("./assets/cielo4-min-phone.jpg");
+    background-image: url("./assets/cielo4-min-phone.webp");
     background-repeat: no-repeat;
     background-size: initial;
   }

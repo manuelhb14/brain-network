@@ -3,8 +3,8 @@ import { ethers, BigNumber } from 'ethers';
 import { Transition } from 'react-transition-group';
 import './App.css';
 
-import brain0 from "./assets/brain.png";
-import brain1 from "./assets/brain1.png";
+import brain0 from "./assets/brain.webp";
+import brain1 from "./assets/brain1.webp";
 
 import logo0 from './assets/logo0.webp';
 
@@ -15,7 +15,7 @@ import looksLogo from "./assets/looks.webp"
 import termsLogo from "./assets/terms.webp"
 import audioLogo from "./assets/audio.svg"
 
-import nft from "./assets/mosca1.jpeg"
+import nft from "./assets/mosca1.webp"
 
 import Icon from './components/Icon';
 

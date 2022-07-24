@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import ReactAudioPlayer from 'react-audio-player';
 import { ethers, BigNumber } from 'ethers';
+import { Transition } from 'react-transition-group';
 import './App.css';
 
 import brain0 from "./assets/brain.png";
 import brain1 from "./assets/brain1.png";
 
-import logo0 from './assets/logo0.png';
+import logo0 from './assets/logo0.webp';
 
-import twitterLogo from "./assets/twitter-min.png"
-import openseaLogo from "./assets/opensea-min.png"
-import discordLogo from "./assets/discord-min.png"
-import looksLogo from "./assets/looks-min.png"
-import termsLogo from "./assets/terms-min.png"
+import twitterLogo from "./assets/twitter.webp"
+import openseaLogo from "./assets/opensea.webp"
+import discordLogo from "./assets/discord.webp"
+import looksLogo from "./assets/looks.webp"
+import termsLogo from "./assets/terms.webp"
 import audioLogo from "./assets/audio.svg"
 
 import nft from "./assets/mosca1.jpeg"
-
-import music from "./assets/music.mp3";
 
 import Icon from './components/Icon';
 
@@ -39,6 +37,7 @@ function App() {
   const [visible, setVisible] = useState(true);
   const [width, setWidth] = useState(window.innerWidth);
   const [isHover, setIsHover] = useState(false);
+  const [isAudio, setIsAudio] = useState(false);
 
   const connect = async () => {
     if (window.ethereum) {
@@ -100,6 +99,18 @@ function App() {
     setMintAmount(newMintAmount);
   };
 
+  // const playAudio = () => {
+  //   const audio = new Audio("/music.mp3");
+  //   audio.play().then(() => {
+  //     console.log("Audio played");
+  //     setIsAudio(true);
+  //   }
+  //   ).catch(error => {
+  //     console.log(error);
+  //   }
+  //   );
+  // };
+
   useEffect(() => {
     window.addEventListener('scroll', () => {
       setPosition(window.scrollY);
@@ -123,11 +134,14 @@ function App() {
   );
 
   useEffect(() => {
-    if (position > 100) {
+    if (position > 50) {
       setVisible(false);
     } else {
       setVisible(true);
     }
+    // if (position > 10 && !isAudio) {
+    //   playAudio();
+    // }
   }
   , [position]);
 
@@ -150,6 +164,7 @@ function App() {
         <Icon link="https://discord.com" icon={discordLogo} name="discord" />
         <Icon link="https://opensea.io" icon={openseaLogo} name="opensea" />
         <Icon link="https://looksrare.org" icon={looksLogo} name="looks" />
+        {/* <Icon link="" icon={termsLogo} name="terms" /> */}
       </div>
       <header className="App-header">
         <div id="cf">

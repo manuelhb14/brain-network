@@ -207,7 +207,7 @@ a:active {
 @media screen and (max-width: 600px) {
 
   .App {
-    background-image: url("./assets/cielo4-min-phone.png");
+    background-image: url("./assets/cielo4-min-phone.jpg");
     background-repeat: no-repeat;
     background-size: initial;
   }

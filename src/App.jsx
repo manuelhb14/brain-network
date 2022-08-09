@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 import { ethers, BigNumber } from 'ethers';
-import { Transition } from 'react-transition-group';
+
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
 import brain0 from "./assets/brain.webp";
@@ -26,7 +28,7 @@ function App() {
   const [text, setText] = useState("Connect Wallet");
   const [isConnected, setIsConnected] = useState(false);
   const [contractAddress, setContractAddress] = useState("0x1c1a7c4332cA88F6e52ac63D058A67443E187F8e");
-  const [network, setNetwork] = useState(4);
+  const [networkId, setNetworkId] = useState('0x4');
   const [cost, setCost] = useState(6000000000000000);
   const [gasLimit, setGasLimit] = useState(285000);
   const [mintAmount, setMintAmount] = useState(1);
@@ -38,6 +40,9 @@ function App() {
   const [width, setWidth] = useState(window.innerWidth);
   const [isHover, setIsHover] = useState(false);
   const [isAudio, setIsAudio] = useState(false);
+  const [warning, setWarning] = useState("");
+  const [currentChainId, setCurrentChainId] = useState(0);
+  const [opacity, setOpacity] = useState(0);
 
   const connect = async () => {
     if (window.ethereum) {
@@ -45,6 +50,10 @@ function App() {
         await window.ethereum.request({ method: "eth_requestAccounts" });
         console.log("Connected to Ethereum");
         setIsConnected(true);
+        checkNetwork();
+        if (currentChainId !== networkId) {
+          await changeNetwork();
+        }
       } catch (error) {
         console.log("User denied account access");
         setIsConnected(false);
@@ -58,7 +67,34 @@ function App() {
       const signer = provider.getSigner();
       const contract = new ethers.Contract(contractAddress, abi, provider.getSigner());
       const count = await contract.freeMintedCount(signer.getAddress());
-      setFreeMintedCount(count);
+      setFreeMintedCount(count.toNumber());
+    }
+  }
+
+  const listenForTxMined = async (txHash, provider) => {
+    return new Promise((resolve, reject) => {
+      provider.once(txHash, (txReceipt) => {
+        resolve(txReceipt);
+      }
+      );
+    }
+    );
+  }
+
+  const changeNetwork = async () => {
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: networkId }]  
+      });
+  }
+
+  const checkNetwork = async () => {
+    const currentChainId = await window.ethereum.request({ method: "eth_chainId" });
+    setCurrentChainId(currentChainId);
+    if (currentChainId !== networkId) {
+      setWarning("You are on the wrong network. Switch to the Ethereum Mainnet.");
+    } else {
+      setWarning("");
     }
   }
 
@@ -70,18 +106,70 @@ function App() {
         const totalCost = BigNumber.from(cost).mul(BigNumber.from(mintAmount));
         const totalGas = BigNumber.from(gasLimit).mul(BigNumber.from(mintAmount));
         setPending(true);
+        const txToast = toast.loading(`Minting...`);
+        blinkBrain();
         await contract.mint_540(mintAmount, {
           gasLimit: totalGas.toString(),
           value: freeMintedCount !== 0 ? totalCost : BigNumber.from(totalCost).sub(cost).toString()
-        }).then(() => {
-          console.log("Minted");
+        }).then((tx) => {
+          listenForTxMined(tx.hash, provider).then(() => {
+            console.log(tx);
+            toast.update(txToast, {
+              render: <div>Welcome to the Brain Network!</div>,
+              icon: "🧠",
+              type: "success",
+              isLoading: false,
+              autoClose: 5000,
+            });
+            setPending(false);
+          }
+          ).catch((error) => {
+            toast.update(txToast, {
+              render: <div>Error: {error.message}</div>,
+              type: "error",
+              isLoading: false,
+              autoClose: 3000
+            });
+            setPending(false);
+          }
+          );
         }
         ).catch(error => {
           console.log(error);
+          toast.update(txToast, {
+            render: <div>Error: {error.message}</div>,
+            type: "error",
+            isLoading: false,
+            autoClose: 3000
+          });
+          console.log(error);
+          setPending(false);
         }
         );
     }
   }
+
+  const blinkBrain = () => {
+    setTimeout(() => {
+      console.log("blink");
+      if (opacity === 0) {
+        setOpacity(1);
+        console.log("opacity: " + opacity);
+      } else {
+        setOpacity(0);
+        console.log("opacity: " + opacity);
+      }
+      console.log(pending);
+      if (pending) {
+        blinkBrain();
+      } else {
+        // break the loop
+        clearTimeout(blinkBrain);
+      }
+    }
+    , 1200);
+  }
+
 
   const decrementMintAmount = () => {
     let newMintAmount = mintAmount - 1;
@@ -120,6 +208,13 @@ function App() {
       setWidth(window.innerWidth);
     }
     );
+    if (window.ethereum) {
+      window.ethereum.on("chainChanged", () => {
+        checkNetwork();
+      }
+      );
+    }
+
     return () => {
       window.removeEventListener('scroll', () => {
         setPosition(window.scrollY);
@@ -186,8 +281,8 @@ function App() {
             <img className="logo" src={logo0} alt="logo"/>
           </div>
         )}
-        <button onClick={isConnected ? mint : connect} className= { isConnected ? "button-connected" : "button" }>{text}</button>
-        {/* <audio src={music} autoPlay loop /> */}
+        <button onClick={isConnected ? mint : connect} className= {isConnected ? "button-connected" : "button"} disabled={isConnected ? (networkId === currentChainId ? 0 : 1) : 0}>{text}</button>
+        <p> {warning} </p>
       </header>
       <div className="content">
         <div className="content-left">
@@ -197,7 +292,19 @@ function App() {
           <h3 className='title'> Welcome to Brain Network 🧠 </h3>
           <p className='text'> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
         </div>
-      </div>  
+      </div>
+      <ToastContainer
+        position="top-left"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 }

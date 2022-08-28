@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { ethers, BigNumber } from 'ethers';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
@@ -16,6 +17,8 @@ import discordLogo from "./assets/discord.webp"
 import looksLogo from "./assets/looks.webp"
 import termsLogo from "./assets/terms.webp"
 import audioLogo from "./assets/audio.svg"
+
+import music from "./assets/music.mp3";
 
 import nft from "./assets/mosca1.webp"
 
@@ -43,6 +46,13 @@ function App() {
   const [warning, setWarning] = useState("");
   const [currentChainId, setCurrentChainId] = useState(0);
   const [opacity, setOpacity] = useState(0);
+  const [isClicked, setIsClicked] = useState(false);
+
+  const [parent]  = useAutoAnimate({
+    duration: 1000,
+    delay: 0,
+    ease: 'easeInOutQuad'
+  });
 
   const connect = async () => {
     if (window.ethereum) {
@@ -82,10 +92,10 @@ function App() {
   }
 
   const changeNetwork = async () => {
-      await window.ethereum.request({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: networkId }]  
-      });
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: networkId }]
+    });
   }
 
   const checkNetwork = async () => {
@@ -100,52 +110,52 @@ function App() {
 
   const mint = async () => {
     if (isConnected) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(contractAddress, abi, signer);
-        const totalCost = BigNumber.from(cost).mul(BigNumber.from(mintAmount));
-        const totalGas = BigNumber.from(gasLimit).mul(BigNumber.from(mintAmount));
-        setPending(true);
-        const txToast = toast.loading(`Minting...`);
-        blinkBrain();
-        await contract.mint_540(mintAmount, {
-          gasLimit: totalGas.toString(),
-          value: freeMintedCount !== 0 ? totalCost : BigNumber.from(totalCost).sub(cost).toString()
-        }).then((tx) => {
-          listenForTxMined(tx.hash, provider).then(() => {
-            console.log(tx);
-            toast.update(txToast, {
-              render: <div>Welcome to the Brain Network!</div>,
-              icon: "🧠",
-              type: "success",
-              isLoading: false,
-              autoClose: 5000,
-            });
-            setPending(false);
-          }
-          ).catch((error) => {
-            toast.update(txToast, {
-              render: <div>Error: {error.message}</div>,
-              type: "error",
-              isLoading: false,
-              autoClose: 3000
-            });
-            setPending(false);
-          }
-          );
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(contractAddress, abi, signer);
+      const totalCost = BigNumber.from(cost).mul(BigNumber.from(mintAmount));
+      const totalGas = BigNumber.from(gasLimit).mul(BigNumber.from(mintAmount));
+      setPending(true);
+      const txToast = toast.loading(`Minting...`);
+      blinkBrain();
+      await contract.mint_540(mintAmount, {
+        gasLimit: totalGas.toString(),
+        value: freeMintedCount !== 0 ? totalCost : BigNumber.from(totalCost).sub(cost).toString()
+      }).then((tx) => {
+        listenForTxMined(tx.hash, provider).then(() => {
+          console.log(tx);
+          toast.update(txToast, {
+            render: <div>Welcome to the Brain Network!</div>,
+            icon: "🧠",
+            type: "success",
+            isLoading: false,
+            autoClose: 5000,
+          });
+          setPending(false);
         }
-        ).catch(error => {
-          console.log(error);
+        ).catch((error) => {
           toast.update(txToast, {
             render: <div>Error: {error.message}</div>,
             type: "error",
             isLoading: false,
             autoClose: 3000
           });
-          console.log(error);
           setPending(false);
         }
         );
+      }
+      ).catch(error => {
+        console.log(error);
+        toast.update(txToast, {
+          render: <div>Error: {error.message}</div>,
+          type: "error",
+          isLoading: false,
+          autoClose: 3000
+        });
+        console.log(error);
+        setPending(false);
+      }
+      );
     }
   }
 
@@ -167,9 +177,8 @@ function App() {
         clearTimeout(blinkBrain);
       }
     }
-    , 1200);
+      , 1200);
   }
-
 
   const decrementMintAmount = () => {
     let newMintAmount = mintAmount - 1;
@@ -238,7 +247,7 @@ function App() {
     //   playAudio();
     // }
   }
-  , [position]);
+    , [position]);
 
   useEffect(() => {
     if (isConnected) {
@@ -249,62 +258,76 @@ function App() {
   useEffect(() => {
     getFreeMintedCount();
   }
-  , [isConnected, pending]);
+    , [isConnected, pending]);
 
 
   return (
-    <div className="App">
-      <div className={`navbar ${width <= 1750 && !visible ? "hidden" : "visible"}`}>
-        <Icon link="https://twitter.com" icon={twitterLogo} name="twitter" />
-        <Icon link="https://discord.com" icon={discordLogo} name="discord" />
-        <Icon link="https://opensea.io" icon={openseaLogo} name="opensea" />
-        <Icon link="https://looksrare.org" icon={looksLogo} name="looks" />
-        {/* <Icon link="" icon={termsLogo} name="terms" /> */}
-      </div>
-      <header className="App-header">
-        <div id="cf">
-          <img className="top" src={brain0} alt="brain0"/>
-          <img className="bottom" src={brain1} alt="brain1"/>
+    <div className="App" ref={parent}>
+      {!isClicked ? (
+        <div className="App-header">
+          <div className="App-header-text">
+            <h1>Welcome to the Brain Network!</h1>
+          <button onClick={() => { setIsClicked(true); }} className="button-connected">
+            <span>Enter</span>
+          </button>
+          </div>
         </div>
-        {isConnected ? (
-          <div className="mint-text">
-            <h3>FREE mint now live</h3>
-            <p> Mint 1 free / First 2500 are free / Mint price is 0.008 ETH </p>
-            <div className="mint-amount">
-              <button disabled={mintAmount === 1 ? 1 : 0} onClick={decrementMintAmount} className="button-change">-</button>
-              <p className="mint-value">{mintAmount}</p>
-              <button disabled={mintAmount === maxMintAmount ? 1 : 0} onClick={incrementMintAmount} className="button-change">+</button>
+      ) : (
+        <div className="App-intro">
+          <audio src="/music.mp3" autoPlay={true} loop={true} />
+          <div className={`navbar ${width <= 1750 && !visible ? "hidden" : "visible"}`}>
+            <Icon link="https://twitter.com" icon={twitterLogo} name="twitter" />
+            <Icon link="https://discord.com" icon={discordLogo} name="discord" />
+            <Icon link="https://opensea.io" icon={openseaLogo} name="opensea" />
+            <Icon link="https://looksrare.org" icon={looksLogo} name="looks" />
+            {/* <Icon link="" icon={termsLogo} name="terms" /> */}
+          </div>
+          <header className="App-header">
+            <div id="cf">
+              <img className="top" src={brain0} alt="brain0" />
+              <img className="bottom" src={brain1} alt="brain1" />
+            </div>
+            {isConnected ? (
+              <div className="mint-text">
+                <h3>FREE mint now live</h3>
+                <p> Mint 1 free / First 2500 are free / Mint price is 0.008 ETH </p>
+                <div className="mint-amount">
+                  <button disabled={mintAmount === 1 ? 1 : 0} onClick={decrementMintAmount} className="button-change">-</button>
+                  <p className="mint-value">{mintAmount}</p>
+                  <button disabled={mintAmount === maxMintAmount ? 1 : 0} onClick={incrementMintAmount} className="button-change">+</button>
+                </div>
+              </div>
+            ) : (
+              <div className="image">
+                <img className="logo" src={logo0} alt="logo" />
+              </div>
+            )}
+            <button onClick={isConnected ? mint : connect} className={isConnected ? "button-connected" : "button"} disabled={isConnected ? (networkId === currentChainId ? 0 : 1) : 0}>{text}</button>
+            <p> {warning} </p>
+          </header>
+          <div className="content">
+            <div className="content-left">
+              <img className={isHover ? "nft-hover" : "nft"} src={nft} alt="nft" onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)} />
+            </div>
+            <div className="content-right">
+              <h3 className='title'> Welcome to Brain Network 🧠 </h3>
+              <p className='text'> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
             </div>
           </div>
-        ) : (
-          <div className="image">
-            <img className="logo" src={logo0} alt="logo"/>
-          </div>
-        )}
-        <button onClick={isConnected ? mint : connect} className= {isConnected ? "button-connected" : "button"} disabled={isConnected ? (networkId === currentChainId ? 0 : 1) : 0}>{text}</button>
-        <p> {warning} </p>
-      </header>
-      <div className="content">
-        <div className="content-left">
-          <img className={isHover ? "nft-hover" : "nft"} src={nft} alt="nft" onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}/>
+          <ToastContainer
+            position="top-left"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+          />
         </div>
-        <div className="content-right">
-          <h3 className='title'> Welcome to Brain Network 🧠 </h3>
-          <p className='text'> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-        </div>
-      </div>
-      <ToastContainer
-        position="top-left"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
+      )}
     </div>
   );
 }
